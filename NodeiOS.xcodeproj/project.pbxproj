@@ -14,9 +14,13 @@
 		CD1787702643A2F600AD97B2 /* NodeiOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CD17876E2643A2F600AD97B2 /* NodeiOS.xcdatamodeld */; };
 		CD1787722643A31200AD97B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD1787712643A31200AD97B2 /* Assets.xcassets */; };
 		CD1787752643A31200AD97B2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD1787732643A31200AD97B2 /* LaunchScreen.storyboard */; };
+		D64CC9D788A9D86F1A430210 /* Pods_NodeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FF8EF1DB742745669AF02E9 /* Pods_NodeiOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1427161354B41E63284E9B58 /* Pods-NodeiOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NodeiOS.release.xcconfig"; path = "Target Support Files/Pods-NodeiOS/Pods-NodeiOS.release.xcconfig"; sourceTree = "<group>"; };
+		32C500C87347DCC094E509CB /* Pods-NodeiOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NodeiOS.debug.xcconfig"; path = "Target Support Files/Pods-NodeiOS/Pods-NodeiOS.debug.xcconfig"; sourceTree = "<group>"; };
+		6FF8EF1DB742745669AF02E9 /* Pods_NodeiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NodeiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD1787622643A2F600AD97B2 /* NodeiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NodeiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD1787652643A2F600AD97B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD1787672643A2F600AD97B2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -33,17 +37,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D64CC9D788A9D86F1A430210 /* Pods_NodeiOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		584AE1F060E1A946F70741A0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6FF8EF1DB742745669AF02E9 /* Pods_NodeiOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CD1787592643A2F600AD97B2 = {
 			isa = PBXGroup;
 			children = (
 				CD1787642643A2F600AD97B2 /* NodeiOS */,
 				CD1787632643A2F600AD97B2 /* Products */,
+				FB75B5BCD2FC41BD88ABC30E /* Pods */,
+				584AE1F060E1A946F70741A0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -70,6 +85,16 @@
 			path = NodeiOS;
 			sourceTree = "<group>";
 		};
+		FB75B5BCD2FC41BD88ABC30E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				32C500C87347DCC094E509CB /* Pods-NodeiOS.debug.xcconfig */,
+				1427161354B41E63284E9B58 /* Pods-NodeiOS.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -77,9 +102,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CD1787792643A31200AD97B2 /* Build configuration list for PBXNativeTarget "NodeiOS" */;
 			buildPhases = (
+				D30B45965FD52E3623F4D2DA /* [CP] Check Pods Manifest.lock */,
 				CD17875E2643A2F600AD97B2 /* Sources */,
 				CD17875F2643A2F600AD97B2 /* Frameworks */,
 				CD1787602643A2F600AD97B2 /* Resources */,
+				DB04DEC0652DCF1D9802F90C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -134,6 +161,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D30B45965FD52E3623F4D2DA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NodeiOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DB04DEC0652DCF1D9802F90C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NodeiOS/Pods-NodeiOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NodeiOS/Pods-NodeiOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NodeiOS/Pods-NodeiOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CD17875E2643A2F600AD97B2 /* Sources */ = {
@@ -287,6 +356,7 @@
 		};
 		CD17877A2643A31200AD97B2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 32C500C87347DCC094E509CB /* Pods-NodeiOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -305,6 +375,7 @@
 		};
 		CD17877B2643A31200AD97B2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1427161354B41E63284E9B58 /* Pods-NodeiOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
