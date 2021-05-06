@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,13 @@
 		CD1787702643A2F600AD97B2 /* NodeiOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CD17876E2643A2F600AD97B2 /* NodeiOS.xcdatamodeld */; };
 		CD1787722643A31200AD97B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD1787712643A31200AD97B2 /* Assets.xcassets */; };
 		CD1787752643A31200AD97B2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD1787732643A31200AD97B2 /* LaunchScreen.storyboard */; };
+		CD1787832643BEB700AD97B2 /* ItemListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1787822643BEB700AD97B2 /* ItemListVC.swift */; };
+		CD1787862643C5CA00AD97B2 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CD1787852643C5CA00AD97B2 /* libsqlite3.0.tbd */; };
+		CD1787952643C8F000AD97B2 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = CD17878B2643C8F000AD97B2 /* FMDatabaseQueue.m */; };
+		CD1787962643C8F000AD97B2 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = CD17878E2643C8F000AD97B2 /* FMResultSet.m */; };
+		CD1787972643C8F000AD97B2 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1787902643C8F000AD97B2 /* FMDatabasePool.m */; };
+		CD1787982643C8F000AD97B2 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1787912643C8F000AD97B2 /* FMDatabase.m */; };
+		CD1787992643C8F000AD97B2 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1787932643C8F000AD97B2 /* FMDatabaseAdditions.m */; };
 		D64CC9D788A9D86F1A430210 /* Pods_NodeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FF8EF1DB742745669AF02E9 /* Pods_NodeiOS.framework */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +37,20 @@
 		CD1787712643A31200AD97B2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CD1787742643A31200AD97B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CD1787762643A31200AD97B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CD1787822643BEB700AD97B2 /* ItemListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListVC.swift; sourceTree = "<group>"; };
+		CD1787852643C5CA00AD97B2 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		CD1787892643C8EF00AD97B2 /* NodeiOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NodeiOS-Bridging-Header.h"; sourceTree = "<group>"; };
+		CD17878A2643C8F000AD97B2 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		CD17878B2643C8F000AD97B2 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		CD17878C2643C8F000AD97B2 /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
+		CD17878D2643C8F000AD97B2 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		CD17878E2643C8F000AD97B2 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
+		CD17878F2643C8F000AD97B2 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		CD1787902643C8F000AD97B2 /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
+		CD1787912643C8F000AD97B2 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		CD1787922643C8F000AD97B2 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
+		CD1787932643C8F000AD97B2 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		CD1787942643C8F000AD97B2 /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD1787862643C5CA00AD97B2 /* libsqlite3.0.tbd in Frameworks */,
 				D64CC9D788A9D86F1A430210 /* Pods_NodeiOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -47,6 +69,7 @@
 		584AE1F060E1A946F70741A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CD1787852643C5CA00AD97B2 /* libsqlite3.0.tbd */,
 				6FF8EF1DB742745669AF02E9 /* Pods_NodeiOS.framework */,
 			);
 			name = Frameworks;
@@ -73,6 +96,7 @@
 		CD1787642643A2F600AD97B2 /* NodeiOS */ = {
 			isa = PBXGroup;
 			children = (
+				CD1787882643C89C00AD97B2 /* fmdb */,
 				CD1787652643A2F600AD97B2 /* AppDelegate.swift */,
 				CD1787672643A2F600AD97B2 /* SceneDelegate.swift */,
 				CD1787692643A2F600AD97B2 /* ViewController.swift */,
@@ -81,8 +105,28 @@
 				CD1787732643A31200AD97B2 /* LaunchScreen.storyboard */,
 				CD1787762643A31200AD97B2 /* Info.plist */,
 				CD17876E2643A2F600AD97B2 /* NodeiOS.xcdatamodeld */,
+				CD1787822643BEB700AD97B2 /* ItemListVC.swift */,
 			);
 			path = NodeiOS;
+			sourceTree = "<group>";
+		};
+		CD1787882643C89C00AD97B2 /* fmdb */ = {
+			isa = PBXGroup;
+			children = (
+				CD17878A2643C8F000AD97B2 /* FMDatabase.h */,
+				CD1787912643C8F000AD97B2 /* FMDatabase.m */,
+				CD17878F2643C8F000AD97B2 /* FMDatabaseAdditions.h */,
+				CD1787932643C8F000AD97B2 /* FMDatabaseAdditions.m */,
+				CD1787942643C8F000AD97B2 /* FMDatabasePool.h */,
+				CD1787902643C8F000AD97B2 /* FMDatabasePool.m */,
+				CD1787922643C8F000AD97B2 /* FMDatabaseQueue.h */,
+				CD17878B2643C8F000AD97B2 /* FMDatabaseQueue.m */,
+				CD17878C2643C8F000AD97B2 /* FMDB.h */,
+				CD17878D2643C8F000AD97B2 /* FMResultSet.h */,
+				CD17878E2643C8F000AD97B2 /* FMResultSet.m */,
+				CD1787892643C8EF00AD97B2 /* NodeiOS-Bridging-Header.h */,
+			);
+			path = fmdb;
 			sourceTree = "<group>";
 		};
 		FB75B5BCD2FC41BD88ABC30E /* Pods */ = {
@@ -91,7 +135,6 @@
 				32C500C87347DCC094E509CB /* Pods-NodeiOS.debug.xcconfig */,
 				1427161354B41E63284E9B58 /* Pods-NodeiOS.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -128,6 +171,7 @@
 				TargetAttributes = {
 					CD1787612643A2F600AD97B2 = {
 						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1240;
 					};
 				};
 			};
@@ -210,9 +254,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD17876A2643A2F600AD97B2 /* ViewController.swift in Sources */,
+				CD1787832643BEB700AD97B2 /* ItemListVC.swift in Sources */,
+				CD1787962643C8F000AD97B2 /* FMResultSet.m in Sources */,
+				CD1787982643C8F000AD97B2 /* FMDatabase.m in Sources */,
 				CD1787702643A2F600AD97B2 /* NodeiOS.xcdatamodeld in Sources */,
 				CD1787662643A2F600AD97B2 /* AppDelegate.swift in Sources */,
+				CD1787972643C8F000AD97B2 /* FMDatabasePool.m in Sources */,
 				CD1787682643A2F600AD97B2 /* SceneDelegate.swift in Sources */,
+				CD1787952643C8F000AD97B2 /* FMDatabaseQueue.m in Sources */,
+				CD1787992643C8F000AD97B2 /* FMDatabaseAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,6 +410,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = NodeiOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -368,6 +419,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = taehuikim0430.gmail.NodeiOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "NodeiOS/fmdb/NodeiOS-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -379,6 +432,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = NodeiOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -387,6 +441,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = taehuikim0430.gmail.NodeiOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "NodeiOS/fmdb/NodeiOS-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
