@@ -30,6 +30,9 @@ class ItemListVC: UITableViewController {
         //네비게이션 바의 타이틀 설정
         title = "데이터 목록"
         
+        //네비게이션 바의 왼쪽에 editButton을 배치
+        navigationItem.leftBarButtonItem = editButtonItem
+        
         //파일을 핸들링하기 위한 객체 가져오기
         let fileMgr = FileManager.default
         
@@ -109,10 +112,164 @@ class ItemListVC: UITableViewController {
             //다운로드 종료
             //업데이트 받은 시간을 파일에 저장
             
+            //업데이트 된 시간 정보를 서버에서 받아오기
+            let updateurl = "http://192.168.1.148/item/lastupdatetime"
+            //JSON 데이터를 get 방식으로 다운로드
+            let updaterequest = AF.request(updateurl, method: .get, encoding: JSONEncoding.default, headers: [:])
+            updaterequest.responseJSON{
+                response in
+                //받은 데이터를 NXDictionary로 변환
+                if let jsonObject = response.value as? [String:Any]{
+                    //result 키의 값을 문자열로 가져오기
+                    let result = jsonObject["result"] as? String
+                    
+                    //result를 파일에 기록
+                    let dataBuffer = result!.data(using: String.Encoding.utf8)
+                    fileMgr.createFile(atPath: updatePath, contents: dataBuffer, attributes: nil)
+                    
+                }
+            }
+            
         }
         //데이터베이스 파일이 존재한다면
         else{
-            
+            //업데이트 된 시간을 기록한 파일의 경로를 이용해서 데이터 읽어오기
+            let databuffer = fileMgr.contents(atPath: updatePath)
+            let updatetime = NSString(data: databuffer!, encoding: String.Encoding.utf8.rawValue) as String?
+            //서버에서 업데이트 된 시간을 찾아오기
+            let updateurl = "http://192.168.1.148/item/lastupdatetime"
+            //JSON 데이터를 get 방식으로 다운로드
+            let updaterequest = AF.request(updateurl, method: .get, encoding: JSONEncoding.default, headers: [:])
+            //받아온 데이터를 읽기
+            updaterequest.responseJSON{
+                response in
+                if let jsonObject = response.value as? [String:Any]{
+                    let result = jsonObject["result"] as? String
+                    //로컬에 저장돈 시간과 서버의 시간을 비교
+                    //서버의 시간과 로컬의 시간이 같다면 다운로드 받지 않고 SQLite의 내용을 그대로 출력
+                    if updatetime == result{
+                        let alert = UIAlertController(title: "server data 사용", message: "서버의 시간과 로컬의 시간이 같아서 로컬의 데이터 출력", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "확인", style: .default))
+                        self.present(alert, animated: true)
+                        
+                        //저장해놓은 데이터베이스 파일의 내용 읽기
+                        let itemDB = FMDatabase(path: dbPath)
+                        itemDB.open()
+                        
+                        do{
+                            let sql = """
+                                select *
+                                from item
+                                order by itemid asc
+                            """
+                            
+                            //sql 실행
+                            let rs = try itemDB.executeQuery(sql, values: nil)
+                            
+                            //결과를 순회
+                            while rs.next(){
+                                var item = Item()
+                                
+                                item.itemid = Int(rs.int(forColumn: "itemid"))
+                                item.itemname = rs.string(forColumn: "itemname")
+                                item.price = Int(rs.int(forColumn: "price"))
+                                item.description = rs.string(forColumn: "description")
+                                item.pictureurl = rs.string(forColumn: "pictureurl")
+                                item.updatedate = rs.string(forColumn: "updatedate")
+                                
+                                //데이터를 list에 저장
+                                self.itemList.append(item)
+                            }
+                            //테이블 뷰 다시 출력
+                            self.tableView.reloadData()
+                        }catch let error as NSError{
+                            NSLog("데이터베이스 읽기 실패:\(error .localizedDescription)")
+                        }
+                        //데이터베이스 닫기
+                        itemDB.close()
+                    }
+                    //서버의 시간과 로컬의 시간이 같지 않다면 데이터를 다시 다운로드 받아서 출력
+                    else{
+                        let alert = UIAlertController(title: "server data 사용", message: "서버의 시간과 로컬의 시간이 달라서 다시 다운로드", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "확인", style: .default))
+                        self.present(alert, animated: true)
+                        
+                        //기존 데이터를 전부 지우고 새로 다운로드
+                        
+                        //기존에 저장해 둔 데이터를 전부 삭제
+                        try! fileMgr.removeItem(atPath : dbPath)
+                        try! fileMgr.removeItem(atPath : updatePath)
+                        self.itemList.removeAll()
+                        
+                        //데이터베이스를 다시 생성하고 열기
+                        let itemDB = FMDatabase(path: dbPath)
+                        itemDB.open()
+                        
+                        //테이블 생성
+                        let sql = "create table if not exists item(itemid integer not null primary key, itemname text, price integer, description text, pictureurl test, updatedate text)"
+                        itemDB.executeStatements(sql)
+                        
+                        //서버에서 데이터 읽어오기
+                        //url = "http://192.168.1.143/item.getall"
+                        //210처럼 하거나 아래처럼 쓰거나.
+                        let request = AF.request(url, method: .get, encoding: JSONEncoding.default, headers: [:])
+                        request.responseJSON{
+                            response in
+                            if let jsonObject = response.value as? [String:Any]{
+                                //디셔너리에서 list 키의 데이터를 배열로 가져오기
+                                let list = jsonObject["list"] as! NSArray
+                                //배열을 순회
+                                for index in 0...(list.count - 1){
+                                    //객체 가져오기
+                                    let itemDict = list[index] as! NSDictionary
+                                    
+                                    //하나씩 읽어서 메모리에 저장
+                                    var item = Item()
+                                    item.itemid = ((itemDict["itemid"] as! NSNumber).intValue)
+                                    item.itemname = itemDict["itemname"] as? String
+                                    item.price = ((itemDict["price"] as! NSNumber).intValue)
+                                    item.description = itemDict["description"] as? String
+                                    item.pictureurl = itemDict["pictureurl"] as? String
+                                    item.updatedate = itemDict["updatedate"] as? String
+                                    
+                                    //데이터를 itemList에 추가
+                                    self.itemList.append(item)
+                                    
+                                    //데이터베이스에 삽입
+                                    let sql = "insert into item(itemid, itemname, price, description, pictureurl, updatedate) values(:itemid, :itemname, :price, :description, :pictureurl, :updatedate)"
+                                    //파라미터에 값을 채워서 실행
+                                    var paramDict = [String:Any]()
+                                    paramDict["itemid"] = item.itemid!
+                                    paramDict["itemname"] = item.itemname
+                                    paramDict["price"] = item.price
+                                    paramDict["description"] = item.description
+                                    paramDict["pictureurl"] = item.pictureurl
+                                    paramDict["updatedate"] = item.updatedate
+                                    itemDB.executeUpdate(sql, withParameterDictionary: paramDict)
+                                }
+                            }
+                            //테이블 뷰 다시 출력
+                            self.tableView.reloadData()
+                            //데이터베이스 닫기
+                            itemDB.close()
+                            
+                            //업데이트한 시간을 기록
+                            let updaterequest = AF.request("http://192.168.1.148/item/lastupdatedate", method: .get, encoding: JSONEncoding.default, headers: [:])
+                            
+                            updaterequest.responseJSON{
+                                response in
+                                if let jsonObject = response.value as? [String:Any]{
+                                    let result = jsonObject["result"] as? String
+                                    let databuffer = result!.data(using: String.Encoding.utf8)
+                                    fileMgr.createFile(atPath: updatePath, contents: databuffer, attributes: nil)
+                                }
+                            }
+                        }
+                        
+                    }
+                    
+                }
+            }
         }
     }
 
@@ -165,6 +322,59 @@ class ItemListVC: UITableViewController {
         })
         
         return cell!
+    }
+    
+    //edit 버튼을 눌렀을 때, 보여질 아이콘을 설정하는 메서드
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    //edit 버튼을 누르고 보여지는 아이콘을 선택했을 때 호출되는 메서드 재정의
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        //취소와 확인을 갖는 대화상자를 출력
+        let alert = UIAlertController(title: "데이터 삭제", message: "정말로 삭제하시겠습니까?", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "취조", style: .cancel))
+        
+        alert.addAction(UIAlertAction(title: "확인", style: .default){(action) -> Void in
+            //삭제할 itemid를 찾아오기
+            let itemid = self.itemList[indexPath.row].itemid
+            //데이터 목록에서 삭제
+            self.itemList.remove(at: indexPath.row)
+            //테이블 뷰에서 삭제하는 애니메이션 수행
+            self.tableView.deleteRows(at: [indexPath], with: .right)
+            
+            //서버에서 삭제
+            
+            //파일이 없는 post 방식에서의 파라미터 만들기
+            let parameters = ["itemid":"\(itemid!)"]
+            
+            //서버의 요청 생성
+            let request = AF.request("http://192.168.1.143/item/delete", method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: [:])
+            request.responseJSON{
+                response in
+                
+                if let jsonObject = response.value as? [String:Any]{
+                    //result를 정수로 변환
+                    let result = jsonObject["result"] as! Int32
+                    
+                    var msg = ""
+                    if result == 1{
+                        msg = "삭제 성공"
+                    }else{
+                        msg = "삭제 실패"
+                    }
+                    let resultAlert = UIAlertController(title: "삭제 여부", message: msg, preferredStyle: .alert)
+                    resultAlert.addAction(UIAlertAction(title: "확인", style: .default))
+                    self.present(resultAlert, animated: true)
+                }
+            }
+            
+        })
+        
+        
+        //대화상자 출력
+        present(alert, animated: true)
     }
     
 }
