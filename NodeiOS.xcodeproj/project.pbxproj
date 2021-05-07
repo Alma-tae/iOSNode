@@ -21,6 +21,7 @@
 		CD1787972643C8F000AD97B2 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1787902643C8F000AD97B2 /* FMDatabasePool.m */; };
 		CD1787982643C8F000AD97B2 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1787912643C8F000AD97B2 /* FMDatabase.m */; };
 		CD1787992643C8F000AD97B2 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CD1787932643C8F000AD97B2 /* FMDatabaseAdditions.m */; };
+		CD17879C2645270F00AD97B2 /* ItemAddVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD17879B2645270F00AD97B2 /* ItemAddVC.swift */; };
 		D64CC9D788A9D86F1A430210 /* Pods_NodeiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FF8EF1DB742745669AF02E9 /* Pods_NodeiOS.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +52,7 @@
 		CD1787922643C8F000AD97B2 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
 		CD1787932643C8F000AD97B2 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
 		CD1787942643C8F000AD97B2 /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
+		CD17879B2645270F00AD97B2 /* ItemAddVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemAddVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				CD1787762643A31200AD97B2 /* Info.plist */,
 				CD17876E2643A2F600AD97B2 /* NodeiOS.xcdatamodeld */,
 				CD1787822643BEB700AD97B2 /* ItemListVC.swift */,
+				CD17879B2645270F00AD97B2 /* ItemAddVC.swift */,
 			);
 			path = NodeiOS;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 				CD1787832643BEB700AD97B2 /* ItemListVC.swift in Sources */,
 				CD1787962643C8F000AD97B2 /* FMResultSet.m in Sources */,
 				CD1787982643C8F000AD97B2 /* FMDatabase.m in Sources */,
+				CD17879C2645270F00AD97B2 /* ItemAddVC.swift in Sources */,
 				CD1787702643A2F600AD97B2 /* NodeiOS.xcdatamodeld in Sources */,
 				CD1787662643A2F600AD97B2 /* AppDelegate.swift in Sources */,
 				CD1787972643C8F000AD97B2 /* FMDatabasePool.m in Sources */,

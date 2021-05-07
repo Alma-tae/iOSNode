@@ -29,6 +29,11 @@ class ItemListVC: UITableViewController {
         
         //네비게이션 바의 타이틀 설정
         title = "데이터 목록"
+    }
+
+    //뷰가 보여질 때 호출되는 메서드
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         //네비게이션 바의 왼쪽에 editButton을 배치
         navigationItem.leftBarButtonItem = editButtonItem
@@ -39,6 +44,32 @@ class ItemListVC: UITableViewController {
         //데이터 베이스 파일 경로 생성
         let docPathURL = fileMgr.urls(for: .documentDirectory, in: .userDomainMask).first!
         let dbPath = docPathURL.appendingPathComponent("item.sqlite").path
+        
+        //로그인 처리
+        //로그인 관련 파일의 경로를 생성
+        let loginPath = docPathURL.appendingPathComponent("login.txt").path
+        //로그인 한 상태
+        var loginBtnTitle = ""
+        if fileMgr.fileExists(atPath: loginPath){
+            loginBtnTitle = "로그아웃"
+            //파일의 내용을 읽어서 두번째 저장한 nickname을 찾아옵니다
+            let databuffer = fileMgr.contents(atPath: loginPath)
+            let logintext = String(bytes: databuffer!, encoding: .utf8)
+            let ar = logintext?.components(separatedBy:":")
+            self.title = ar![1]
+        }
+        //로그아웃된 상태
+        else{
+            loginBtnTitle = "로그인"
+        }
+        
+        //바버튼 아이템 생성
+        let loginBarButtonItem = UIBarButtonItem(title: loginBtnTitle, style: .done, target: self, action: #selector(login(_:)))
+        let addBarButtonItem = UIBarButtonItem(title: "추가", style: .done, target: self, action: #selector(add(_:)))
+        
+        //네비게이션 바의 오른쪽에 바버튼 아이템 배치
+        self.navigationItem.rightBarButtonItems = [addBarButtonItem, loginBarButtonItem]
+        
         //업데이트 된 시간을 저장할 텍스트 파일 경로 생성
         let updatePath = docPathURL.appendingPathComponent("update.txt").path
         
@@ -265,14 +296,11 @@ class ItemListVC: UITableViewController {
                                 }
                             }
                         }
-                        
                     }
-                    
                 }
             }
         }
     }
-
     // MARK: - Table view data source 테이블 뷰 관련 메서드
     
     //섹션의 개수를 설정하는 메서드 - 선택
@@ -377,4 +405,103 @@ class ItemListVC: UITableViewController {
         present(alert, animated: true)
     }
     
+    //로그인 처리를 위한 메소드로 네비게이션 바의 오른쪽 바 버튼과 연결할 메서드
+    //@objc 대신에 @IBAction을 붙이면 Main.storyboard에서 연결해야 하고, @objc를 붙이면 코드로 연결해야 합니다.
+    @objc func login(_ sender : Any){
+        //이벤트가 발생한 bar button 아이템의 참조 가져오기
+        let barButtonItem = sender as! UIBarButtonItem
+        
+        //로그인 정보를 저장할 파일 경로를 생성
+        let fileMgr = FileManager.default
+        let docPathURL = fileMgr.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let loginPath = docPathURL.appendingPathComponent("login.txt").path
+        
+        //로그인 처리
+        if barButtonItem.title == "로그인"{
+            //아이디와 비밀번호 입력창을 출력하고, 로그인 처리를 수행
+            let loginAlert = UIAlertController(title: "로그인", message: "아이디와 비밀번호를 입력하세요", preferredStyle: .alert)
+            
+            //입력란 만들기
+            loginAlert.addTextField(){(tf) -> Void in tf.placeholder = "아이디를 입력하세요."}
+            loginAlert.addTextField(){(tf) -> Void in tf.isSecureTextEntry = true
+                tf.placeholder = "비밀번호를 입력하세요."}
+            
+            //버튼 만들기
+            loginAlert.addAction(UIAlertAction(title: "취소", style: .cancel))
+            loginAlert.addAction(UIAlertAction(title: "확인", style: .default){(action) -> Void in
+                
+                //입력한 내용 가져오기
+                let id = loginAlert.textFields?[0].text
+                let pw = loginAlert.textFields?[1].text
+                
+                //post 방식으로 전송할 파라미터로 만들기
+                let parameters = ["memberid":id!, "memberpw":pw!]
+                
+                //요청을 생성
+                let request = AF.request("http://192.168.1.148/member/login", method: .post, parameters: parameters, encoding: URLEncoding.httpBody, headers: nil)
+                //요청을 전송하고 결과 사용하기
+                request.responseJSON{
+                    response in
+                    //전체 데이터를 디셔너리로 변환
+                    if let jsonObject = response.value as? [String:Any]{
+                        //result 키의 데이터 가져오기
+                        let result = jsonObject["result"] as! Int32
+                        //로그인 결과를 출력할 문자열
+                        var loginMsg = ""
+                        //로그인 성공
+                        if result == 1{
+                            loginMsg = "succese"
+                            //버튼의 타이틀을 변경
+                            barButtonItem.title = "log out"
+                            
+                            //member key의 값을 가져오기
+                            let member = jsonObject["member"] as! NSDictionary
+                            //nickname 가져오기
+                            let nickname = member["membernickname"] as! String
+                            //nickname을 타이틀로 설정
+                            self.title = nickname
+                            
+                            //아이디와 별명을 저장
+                            let data = "\(id!):\(nickname)"
+                            let databuffer = data.data(using: .utf8)
+                            fileMgr.createFile(atPath: loginPath, contents: databuffer, attributes: nil)
+                        }
+                        //로그인 실패
+                        else{
+                            loginMsg = "fail"
+                        }
+                        
+                        //로그인 결과 출력하기
+                        let resultAlert = UIAlertController(title: "로그인 결과", message: loginMsg, preferredStyle: .alert)
+                        resultAlert.addAction(UIAlertAction(title: "확인", style: .default))
+                        self.present(resultAlert, animated: true)
+                    }
+                }
+            })
+            
+            //출력
+            self.present(loginAlert, animated: true)
+        }
+        //로그아웃 처리
+        else{
+            //로그인 성공했을 때 만들어진 파일을 제거
+            try! fileMgr.removeItem(atPath: loginPath)
+            //대화상자 출력
+            let resultAlert = UIAlertController(title: "로그아웃", message: "로그아웃 하셨습니다.", preferredStyle: .alert)
+            resultAlert.addAction(UIAlertAction(title: "확인", style: .default))
+            self.present(resultAlert, animated: true)
+            //버튼의 타이틀 변경
+            barButtonItem.title = "로그인"
+            self.title = "아이템 목록"
+        }
+    }
+    
+    //아이템 추가가 호출할 메소드
+    @objc func add(_ sender:Any){
+        //ItemAddVC  뷰 컨트롤러 객체 생성
+        let addVC = storyboard?.instantiateViewController(identifier: "ItemAddVC") as! ItemAddVC
+        
+        //네비게이션 바를 이용해서 출력
+        self.navigationController?.pushViewController(addVC, animated: true)
+    }
 }
